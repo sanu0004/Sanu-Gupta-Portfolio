@@ -89,28 +89,15 @@ const resumeDownload = document.getElementById("resumeDownload");
 
 if (resumeDownload) {
   resumeDownload.addEventListener("click", () => {
-    const pdfUrl = "assets/SanuCV.pdf";
+    // Path starts with "/" so it always resolves from the site root on Vercel
+    const pdfUrl = "/assets/SanuCV.pdf";
 
-    const newTab = window.open("", "_blank");
-
-    newTab.document.write(`
-      <html>
-      <body>
-      <a id       = "downloadLink"
-         href     = "${pdfUrl}"
-         download = "SanuCV.pdf">
-      </a>
-
-      <script>
-        document.getElementById('downloadLink').click();
-
-        setTimeout(() => {
-          window.close();
-        }, 1500);
-      <\/script>
-
-      </body>
-      </html>
-    `);
+    // Create a temporary link in the SAME page and click it (no popup tab needed)
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = "SanuCV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
 }
