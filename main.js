@@ -64,23 +64,56 @@ window.addEventListener("click", (e) => {
   }
 });
 
-  // Contact Form Mail
+  // Contact Form (sends to Formspree, saved in your dashboard + emailed to you)
+
+// 1) Go to https://formspree.io, sign up, click "New Form", and paste your form ID here
+const FORMSPREE_URL = "https://formspree.io/f/xdekvbyq";
 
 const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
+  // Small message area under the button (created here so index.html needs no change)
+  const statusMsg = document.createElement("p");
+  statusMsg.style.cssText = "margin-top:12px;font-size:1.4rem;";
+  contactForm.appendChild(statusMsg);
+
+  const submitBtn = contactForm.querySelector('input[type="submit"]');
+
+  contactForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const name    = document.getElementById("name").value;
-    const email   = document.getElementById("email").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
+    const data = {
+      name:    document.getElementById("name").value.trim(),
+      email:   document.getElementById("email").value.trim(),
+      subject: document.getElementById("subject").value.trim(),
+      message: document.getElementById("message").value.trim(),
+    };
 
-    const body = `Name: ${name}\n\nEmail: ${email}\n\nMessage:\n${message}`;
-    const mailtoLink = `mailto:sanugupta969@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    submitBtn.disabled = true;
+    submitBtn.value = "Sending...";
+    statusMsg.textContent = "";
 
-    window.location.href = mailtoLink;
+    try {
+      const response = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        statusMsg.style.color = "limegreen";
+        statusMsg.textContent = "Thank you! Your message has been sent.";
+        contactForm.reset();
+      } else {
+        throw new Error("Server error");
+      }
+    } catch (err) {
+      statusMsg.style.color = "tomato";
+      statusMsg.textContent = "Sorry, something went wrong. Please email me directly at sanugupta969@gmail.com";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.value = "Submit";
+    }
   });
 }
 
@@ -90,7 +123,7 @@ const resumeDownload = document.getElementById("resumeDownload");
 if (resumeDownload) {
   resumeDownload.addEventListener("click", () => {
     // Path starts with "/" so it always resolves from the site root on Vercel
-    const pdfUrl = "SanuCV.pdf";
+    const pdfUrl = "/assets/SanuCV.pdf";
 
     // Create a temporary link in the SAME page and click it (no popup tab needed)
     const link = document.createElement("a");
