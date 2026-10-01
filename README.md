@@ -57,7 +57,7 @@ deep neural network regression model, evaluated with mean absolute error.
 
 Visit the portfolio here:
 
-https://daniel-j77.github.io/Data-Analyst-Portfolio/
+https://github.com/sanu0004/Sanu-Gupta-Portfolio
 
 ## Contact
 
