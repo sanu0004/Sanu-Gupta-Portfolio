@@ -126,7 +126,7 @@ const resumeDownload = document.getElementById("resumeDownload");
 if (resumeDownload) {
   resumeDownload.addEventListener("click", () => {
     // Path starts with "/" so it always resolves from the site root on Vercel
-    const pdfUrl = "/assets/SanuCV.pdf";
+    const pdfUrl = "SanuCV.pdf";
 
     // Create a temporary link in the SAME page and click it (no popup tab needed)
     const link = document.createElement("a");
