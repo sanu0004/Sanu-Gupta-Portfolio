@@ -1,15 +1,18 @@
-var typed = new Typed(".text", {
-  strings: [
-    "Data Analyst",
-    "Power BI Developer",
-    "Machine Learning Specialist",
-    "Data Visualization Specialist",
-  ],
-  typeSpeed: 100,
-  backSpeed: 100,
-  backDelay: 1000,
-  loop: true,
-});
+// Typing animation (skipped safely if the Typed.js library fails to load)
+if (typeof Typed !== "undefined") {
+  new Typed(".text", {
+    strings: [
+      "Data Analyst",
+      "Power BI Developer",
+      "Machine Learning Specialist",
+      "Data Visualization Specialist",
+    ],
+    typeSpeed: 100,
+    backSpeed: 100,
+    backDelay: 1000,
+    loop: true,
+  });
+}
   // Skills Filter
 const filterBtns = document.querySelectorAll(".filter-btn");
 const skillCards = document.querySelectorAll(".skill-card");
@@ -133,4 +136,28 @@ if (resumeDownload) {
     link.click();
     document.body.removeChild(link);
   });
+}
+
+
+// Mobile menu (hamburger)
+const menuToggle = document.getElementById("menuToggle");
+const navbar = document.getElementById("navbar");
+
+if (menuToggle && navbar) {
+  const icon = menuToggle.querySelector(".menu-icon");
+
+  const closeMenu = () => {
+    navbar.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    icon.innerHTML = "&#9776;";
+  };
+
+  menuToggle.addEventListener("click", () => {
+    const isOpen = navbar.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    icon.innerHTML = isOpen ? "&#10005;" : "&#9776;";
+  });
+
+  // Close the menu after tapping any link
+  navbar.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
 }
