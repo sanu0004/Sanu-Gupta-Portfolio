@@ -130,7 +130,7 @@ if (resumeDownload) {
 
     // Create a temporary link in the SAME page and click it (no popup tab needed)
     const link = document.createElement("a");
-    link.href = SanuCV.pdf;
+    link.href = "SanuCV.pdf";
     link.download = "SanuCV.pdf";
     document.body.appendChild(link);
     link.click();
