@@ -57,7 +57,7 @@ deep neural network regression model, evaluated with mean absolute error.
 
 Visit the portfolio here:
 
-https://github.com/sanu0004/Sanu-Gupta-Portfolio
+https://portfolio-website-ashen-six-99.vercel.app/
 
 ## Contact
 
