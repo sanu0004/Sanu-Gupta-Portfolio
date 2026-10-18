@@ -42,7 +42,7 @@ const DEMO_URLS = {
   "Diabetes Prediction": "https://diabetes-prediction-mu-five.vercel.app/",
   "Heart-Disease-Prediction": "https://heart-vercel-eyaj.vercel.app/",
   "Indian_Election": "https://indian-election-ui.vercel.app/",
-  "Clinical-Trial": "",
+  "Clinical-Trial": "https://clinical-trial-seven.vercel.app/",
   "House Price Prediction (Boston-Housing)": "https://boston-house-price-theta.vercel.app/#0.257,0,9.69,0,0.538,6.208,77.5,3.207,5,330,19.05,391.44,11.36",
   "Cricket_IPL_Stats": "https://ipl-stats-ruby.vercel.app/",
   "Road-Accident-Severity-Prediction": "https://road-accident-severity-prediction-six.vercel.app/",
