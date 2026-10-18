@@ -1,22 +1,25 @@
-var typed = new Typed(".text", {
-  strings: [
-    "Data Analyst",
-    "Power BI Developer",
-    "Machine Learning Specialist",
-    "Data Visualization Specialist",
-  ],
-  typeSpeed: 100,
-  backSpeed: 100,
-  backDelay: 1000,
-  loop: true,
-});
-  // Skills Filter
+// ---------- Typed text ----------
+if (typeof Typed !== "undefined" && document.querySelector(".text")) {
+  new Typed(".text", {
+    strings: [
+      "Data Analyst",
+      "Power BI Developer",
+      "Machine Learning Specialist",
+      "Data Visualization Specialist",
+    ],
+    typeSpeed: 100,
+    backSpeed: 100,
+    backDelay: 1000,
+    loop: true,
+  });
+}
+
+// ---------- Skills Filter ----------
 const filterBtns = document.querySelectorAll(".filter-btn");
 const skillCards = document.querySelectorAll(".skill-card");
 
 filterBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-      // Remove active class from all buttons
     filterBtns.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
@@ -31,8 +34,8 @@ filterBtns.forEach((btn) => {
     });
   });
 });
-  // main.js
 
+// ---------- Project demo links ----------
 const DEMO_URLS = {
   "Build GPT From Scratch": "https://dl-project-gamma.vercel.app/",
   "Movie Recommendation System": "https://movie-recommender-system-sepia-zeta.vercel.app/",
@@ -46,10 +49,11 @@ const DEMO_URLS = {
 };
 
 document.querySelectorAll(".project-card").forEach((card) => {
-  const title = card.querySelector("h3").textContent.trim();
+  const heading = card.querySelector("h3");
   const demoBtn = card.querySelector(".demo-btn");
-  if (!demoBtn) return;
+  if (!heading || !demoBtn) return;
 
+  const title = heading.textContent.trim();
   const url = demoBtn.getAttribute("data-demo") || DEMO_URLS[title] || "";
   if (url) {
     demoBtn.href = url;
@@ -60,50 +64,105 @@ document.querySelectorAll(".project-card").forEach((card) => {
     demoBtn.addEventListener("click", (e) => e.preventDefault());
   }
 });
-  // Resume Popup
-const resumeBtn   = document.getElementById("resumeBtn");
+
+// ---------- Resume popup ----------
+const resumeBtn = document.getElementById("resumeBtn");
 const resumeModal = document.getElementById("resumeModal");
 const resumeClose = document.querySelector(".resume-close");
 
-resumeBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  resumeModal.style.display    = "block";
-  document.body.style.overflow = "hidden";  
-});
+function closeResume() {
+  resumeModal.style.display = "none";
+  document.body.style.overflow = "auto";
+}
 
-resumeClose.addEventListener("click", () => {
-  resumeModal.style.display    = "none";
-  document.body.style.overflow = "auto";  
-});
-
-window.addEventListener("click", (e) => {
-  if (e.target === resumeModal) {
-    resumeModal.style.display    = "none";
-    document.body.style.overflow = "auto";  
-  }
-});
-
-  // Contact Form Mail
-
-const contactForm = document.getElementById("contactForm");
-
-if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
+if (resumeBtn && resumeModal) {
+  resumeBtn.addEventListener("click", (e) => {
     e.preventDefault();
+    resumeModal.style.display = "block";
+    document.body.style.overflow = "hidden";
+  });
 
-    const name    = document.getElementById("name").value;
-    const email   = document.getElementById("email").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
+  if (resumeClose) resumeClose.addEventListener("click", closeResume);
 
-    const body = `Name: ${name}\n\nEmail: ${email}\n\nMessage:\n${message}`;
-    const mailtoLink = `mailto:sanugupta969@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailtoLink;
+  window.addEventListener("click", (e) => {
+    if (e.target === resumeModal) closeResume();
   });
 }
 
+// ---------- Contact form ----------
+const contactForm = document.getElementById("contactForm");
 
+// 1. Create a free form at https://formspree.io
+// 2. Copy its endpoint and paste it here (looks like https://formspree.io/f/abcdwxyz)
+const FORMSPREE_URL = "https://formspree.io/f/xdekvbyq";
+
+if (contactForm) {
+  const submitBtn = contactForm.querySelector('button[type="submit"], input[type="submit"]');
+
+  // Status line under the form (created here, so no HTML change is needed)
+  let statusEl = document.getElementById("formStatus");
+  if (!statusEl) {
+    statusEl = document.createElement("p");
+    statusEl.id = "formStatus";
+    statusEl.setAttribute("role", "status");
+    statusEl.style.marginTop = "12px";
+    contactForm.appendChild(statusEl);
+  }
+  const setStatus = (text, color) => {
+    statusEl.textContent = text;
+    statusEl.style.color = color || "inherit";
+  };
+
+  contactForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // Safe reads: a missing field gives "" instead of crashing the handler
+    const val = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    };
+
+    const payload = {
+      name: val("name"),
+      email: val("email"),
+      subject: val("subject") || "Portfolio contact message",
+      message: val("message"),
+    };
+
+    if (FORMSPREE_URL.includes("YOUR_FORM_ID")) {
+      setStatus("Form is not set up yet: add your Formspree endpoint in main.js.", "#d9534f");
+      return;
+    }
+
+    if (submitBtn) submitBtn.disabled = true;
+    setStatus("Sending…", "#888");
+
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setStatus("Thank you! Your message has been sent.", "#28a745");
+        contactForm.reset();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        const msg = data.errors && data.errors.length
+          ? data.errors.map((er) => er.message).join(", ")
+          : "Something went wrong. Please try again.";
+        setStatus(msg, "#d9534f");
+      }
+    } catch (err) {
+      setStatus("Network error. Please check your connection and try again.", "#d9534f");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+}
+
+// ---------- Resume download ----------
 const resumeDownload = document.getElementById("resumeDownload");
 
 if (resumeDownload) {
