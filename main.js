@@ -33,9 +33,6 @@ filterBtns.forEach((btn) => {
 });
   // main.js
 
-// Project "Try it" buttons: paste each live deployment URL below (keyed by project title),
-// or set data-demo="https://..." on the button in index.html.
-// If no live URL is set yet, the button is shown as disabled.
 const DEMO_URLS = {
   "Build GPT From Scratch": "https://dl-project-gamma.vercel.app/",
   "Movie Recommendation System": "https://movie-recommender-system-sepia-zeta.vercel.app/",
@@ -71,18 +68,18 @@ const resumeClose = document.querySelector(".resume-close");
 resumeBtn.addEventListener("click", (e) => {
   e.preventDefault();
   resumeModal.style.display    = "block";
-  document.body.style.overflow = "hidden";  // disable background scroll
+  document.body.style.overflow = "hidden";  
 });
 
 resumeClose.addEventListener("click", () => {
   resumeModal.style.display    = "none";
-  document.body.style.overflow = "auto";  // re-enable background scroll
+  document.body.style.overflow = "auto";  
 });
 
 window.addEventListener("click", (e) => {
   if (e.target === resumeModal) {
     resumeModal.style.display    = "none";
-    document.body.style.overflow = "auto";  // re-enable background scroll
+    document.body.style.overflow = "auto";  
   }
 });
 
@@ -111,10 +108,8 @@ const resumeDownload = document.getElementById("resumeDownload");
 
 if (resumeDownload) {
   resumeDownload.addEventListener("click", () => {
-    // Path starts with "/" so it always resolves from the site root on Vercel
     const pdfUrl = "/assets/SanuCV.pdf";
 
-    // Create a temporary link in the SAME page and click it (no popup tab needed)
     const link = document.createElement("a");
     link.href = pdfUrl;
     link.download = "SanuCV.pdf";
