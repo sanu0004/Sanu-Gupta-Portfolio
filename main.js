@@ -108,7 +108,7 @@ const resumeDownload = document.getElementById("resumeDownload");
 
 if (resumeDownload) {
   resumeDownload.addEventListener("click", () => {
-    const pdfUrl = "/assets/Sanu_Resume.pdf";
+    const pdfUrl = "Sanu_Resume.pdf";
 
     const link = document.createElement("a");
     link.href = pdfUrl;
